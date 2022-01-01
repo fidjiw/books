@@ -1,6 +1,5 @@
 ---
-bookCollapseSection: false
-weight: 20
+weight: 10
 title: 第1章
 ---
 

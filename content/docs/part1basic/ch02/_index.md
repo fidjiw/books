@@ -1,5 +1,6 @@
 ---
-weight: 10
+bookCollapseSection: false
+weight: 20
 title: 第2章
 ---
 
