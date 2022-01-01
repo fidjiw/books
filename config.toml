@@ -46,10 +46,7 @@ theme = 'hugo-book'
   url = "https://github.com/fidjiw"
   weight = 10
 
-[[menu.after]]
-  name = "Hugo Themes"
-  url = "https://themes.gohugo.io/hugo-book/"
-  weight = 20
+
 
 [params]
   # (Optional, default light) Sets color theme: light, dark or auto.
