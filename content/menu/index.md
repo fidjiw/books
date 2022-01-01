@@ -2,20 +2,21 @@
 headless: true
 ---
 
-- [引言](https://golang.design/under-the-hood/zh-cn/preface/)
-- 第一部分 基础篇
-  - [第 1 章 Go 语言的前世今生](https://golang.design/under-the-hood/zh-cn/part1basic/ch01basic/)
-  - [第 2 章 程序生命周期](https://golang.design/under-the-hood/zh-cn/part1basic/ch02life/)
-  - [第 3 章 语言核心](https://golang.design/under-the-hood/zh-cn/part1basic/ch03lang/)
-  - [第 4 章 错误](https://golang.design/under-the-hood/zh-cn/part1basic/ch04errors/)
-  - [第 5 章 同步模式](https://golang.design/under-the-hood/zh-cn/part1basic/ch05sync/)
-- 第二部分 运行时篇
-  - [第 6 章 并发调度](https://golang.design/under-the-hood/zh-cn/part2runtime/ch06sched/)
-  - [第 7 章 内存分配](https://golang.design/under-the-hood/zh-cn/part2runtime/ch07alloc/)
-  - [第 8 章 垃圾回收](https://golang.design/under-the-hood/zh-cn/part2runtime/ch08gc/)
-- 第三部分 工具链篇
-  - [第 9 章 代码分析](https://golang.design/under-the-hood/zh-cn/part3tools/ch09analysis/)
-  - [第 10 章 依赖管理](https://golang.design/under-the-hood/zh-cn/part3tools/ch10deps/)
-  - [第 13 章 编译技术](https://golang.design/under-the-hood/zh-cn/part3tools/ch11compile/)
-  - [第 12 章 泛型](https://golang.design/under-the-hood/zh-cn/part3tools/ch12generics/)
-- <br />
+- [**docs/example**]({{< relref "/docs/example" >}})
+- [Table of Contents]({{< relref "/docs/example/table-of-contents" >}})
+  - [With ToC]({{< relref "/docs/example/table-of-contents/with-toc" >}})
+  - [Without ToC]({{< relref "/docs/example/table-of-contents/without-toc" >}})
+- [Collapsed]({{< relref "/docs/example/collapsed" >}})
+  - [3rd]({{< relref "/docs/example/collapsed/3rd-level" >}})
+    - [4th]({{< relref "/docs/example/collapsed/3rd-level/4th-level" >}})
+    <br />
+
+- **Shortcodes**
+- [Buttons]({{< relref "/docs/shortcodes/buttons" >}})
+- [Columns]({{< relref "/docs/shortcodes/columns" >}})
+- [Expand]({{< relref "/docs/shortcodes/expand" >}})
+- [Hints]({{< relref "/docs/shortcodes/hints" >}})
+- [Katex]({{< relref "/docs/shortcodes/katex" >}})
+- [Mermaid]({{< relref "/docs/shortcodes/mermaid" >}})
+- [Tabs]({{< relref "/docs/shortcodes/tabs" >}})
+<br />
