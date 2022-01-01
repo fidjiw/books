@@ -41,7 +41,7 @@ theme = 'hugo-book'
 
 [menu]
 # [[menu.before]]
-[[menu.after]]
+[[menu.before]]
   name = "Github"
   url = "https://github.com/fidjiw"
   weight = 10
