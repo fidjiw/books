@@ -1,7 +1,7 @@
 ---
 weight: 1
 bookFlatSection: true
-title: "Example Site"
+title: "第一部分 基础篇"
 ---
 
 ## gogogogo
