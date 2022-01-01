@@ -1,6 +1,6 @@
 baseURL = 'http://example.org/'
 languageCode = 'zh-cn'
-title = 'My New Hugo Site'
+title = 'Go设计与开发'
 theme = 'hugo-book'
 
 
