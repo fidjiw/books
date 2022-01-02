@@ -5,8 +5,8 @@ theme = 'hugo-book'
 
 
 # Book configuration
-#disablePathToLower = true
-#enableGitInfo = true
+disablePathToLower = true
+enableGitInfo = true
 
 
 
@@ -50,6 +50,8 @@ theme = 'hugo-book'
   name = "作者主页"
   url = "https://xfeng.fun"
   weight = 9
+
+
 
 
 [params]
