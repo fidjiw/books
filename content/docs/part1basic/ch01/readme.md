@@ -1,6 +1,7 @@
 ---
 weight: 1000
 title: "第一部分 基础篇"
+type: docs
 ---
 
 # 第一部分 基础篇
