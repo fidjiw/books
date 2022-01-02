@@ -1,4 +1,4 @@
-baseURL = 'https://xfeng.netlify.app/'
+baseURL = 'http://golang.xfeng.fun/'
 languageCode = 'zh-cn'
 title = 'Go设计与开发'
 theme = 'hugo-book'
