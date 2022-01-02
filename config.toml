@@ -39,6 +39,11 @@ enableGitInfo = true
 #  contentDir = 'content.zh'
 #  weight = 3
 
+[[menu.before]]
+  name = "作者主页"
+  url = "https://xfeng.fun"
+  weight = 9
+
 [menu]
 # [[menu.before]]
 [[menu.before]]
@@ -46,11 +51,11 @@ enableGitInfo = true
   url = "https://github.com/fidjiw"
   weight = 10
 
-[[menu.before]]
-  name = "作者主页"
-  url = "https://xfeng.fun"
-  weight = 9
 
+[[menu.before]]
+  name = "________________________________"
+  url = ""
+  weight = 11
 
 
 
