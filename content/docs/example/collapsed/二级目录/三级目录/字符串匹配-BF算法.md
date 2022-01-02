@@ -1,3 +1,12 @@
+---
+title: 字符串匹配
+weight: 2
+bookToc: true
+
+---
+
+# 
+
 ![image-20211229192708819](https://gitee.com/fidjiw/images/raw/master/img/image-20211229192708819.png)
 
 ### BF算法
