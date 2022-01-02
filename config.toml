@@ -46,6 +46,10 @@ theme = 'hugo-book'
   url = "https://github.com/fidjiw"
   weight = 10
 
+[[menu.before]]
+  name = "作者主页"
+  url = "https://xfeng.fun"
+  weight = 9
 
 
 [params]
