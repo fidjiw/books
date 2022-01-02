@@ -1,6 +1,6 @@
 ---
 weight: 10
-bookFlatSection: flase
+bookFlatSection: true
 title: "1.1目录"
 ---
 
