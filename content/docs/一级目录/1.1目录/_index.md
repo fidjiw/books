@@ -1,7 +1,8 @@
 ---
 weight: 10
-bookFlatSection: true
+bookCollapseSection: true
 title: "1.1目录"
 ---
 
 ## 1.1目录
+
