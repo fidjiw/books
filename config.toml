@@ -52,10 +52,6 @@ enableGitInfo = true
   weight = 10
 
 
-[[menu.before]]
-  name = "________________________________"
-  url = ""
-  weight = 11
 
 
 
