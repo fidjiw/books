@@ -1,6 +1,6 @@
 baseURL = 'http://golang.xfeng.fun/'
 languageCode = 'zh-cn'
-title = 'Go学习笔记'
+title = 'Go实战之路'
 theme = 'hugo-book'
 
 
