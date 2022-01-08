@@ -1,5 +1,5 @@
 ---
-title: 1.8 goroutine(channel)
+title: 1.8 channel(goroutine)
 weight: 8
 ---
 
