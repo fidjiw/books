@@ -1,5 +1,5 @@
 ---
-title: 1.10 goroutine
+title: 1.10 goroutine(channel)
 weight: 10
 ---
 
