@@ -61,7 +61,6 @@ Go语言中数据类型分为两种：
 
 ```go
 package main
-
 import (
 	"fmt"
 )
@@ -77,7 +76,6 @@ func main() {
 
 ```go
 package main
-
 import (
 	"fmt"
 )
@@ -97,7 +95,6 @@ Go语言支持两种浮点数：float32和float64
 
 ```go
 package main
-
 import (
 	"fmt"
 	"math"
@@ -112,7 +109,6 @@ Go语言中浮点数默认为：float64
 
 ```go
 package main
-
 import (
 	"fmt"
 )
@@ -128,7 +124,6 @@ func main() {
 
 ```go
 package main
-
 import (
 	"fmt"
 )
@@ -196,6 +191,7 @@ func main() {
 | string.Join(a[]string,sep string)   | join连接   |
 
 ```go
+package main
 import (
 	"fmt"
 )
