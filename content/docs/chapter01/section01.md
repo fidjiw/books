@@ -69,17 +69,146 @@ import (
 func main() {
 	var num int
 	num = 666
-	fmt.Printf("值:%v 类型%T", num, num)
+	fmt.Printf("值:%v 类型%T", num, num) //值:666 类型int
 }
 ```
 
-### unsafe.Sizeof
+### **不同int长度的转换**
 
+```go
+package main
 
+import (
+	"fmt"
+)
+func main() {
+	var num1 int8
+	num1 = 127
+	num2 := int32(num1)
+	fmt.Printf("值:%v 类型%T", num2, num2) //值:127 类型 int32
+}
+```
 
+## **浮点型**
 
+Go语言支持两种浮点数：float32和float64
 
+这两种浮点型数据格式遵循[IEEE 754标准](http://www.softelectro.ru/ieee754_en.html)。
 
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+func main() {
+	fmt.Printf("%f\n", math.Pi) //默认保留 6 位小数 (math.Pi时圆周率)
+	fmt.Printf("%.2f\n", math.Pi) //保留 2 位小数
+}
+```
+
+Go语言中浮点数默认为：float64
+
+```go
+package main
+
+import (
+	"fmt"
+)
+func main() {
+	num := 1.1
+	fmt.Printf("值： %v--类型:%T", num, num) //值： 1.1--类型:float64
+}
+```
+
+### **float精度丢失问题**
+
+与其他编程语言一样，Go语言中的float也有精度丢失的问题，在定长条件下，二进制小数和十进制小数互相转换可能会有精度丢失。
+
+```go
+package main
+
+import (
+	"fmt"
+)
+func main() {
+	a := 1228.6
+	fmt.Println((a * 100)) //输出： 122859.99999999999
+
+	var b float64 = 1228.6
+	fmt.Println((b * 100)) //输出： 122859.99999999999
+
+	m1 := 8.8
+	m2 := 2.2
+	fmt.Println(m1 - m2) // 期望是 6.6， 结果打印出了 6.6000000000000005
+}
+```
+
+使用[第三方包](https://github.com/shopspring/decimal)解决精度问题
+
+## **布尔型**
+
+Go语言中布尔型有true（真）和false（假）两个
+
+- 布尔型变量的默认值为false
+- Go语言中不允许将整型强制转换为布尔型
+- 布尔型不能参与算数运算，也不能与其他类型转换
+
+```go
+package main
+import (
+	"fmt"
+	"unsafe"
+)
+func main() {
+	var a = true
+	fmt.Println(a, "占用字节： ", unsafe.Sizeof(a)) //unsafe.Sizeof(a)返回a变量占用的字节
+}
+```
+
+## **字符串**
+
+所有编程语言中，字符串都是比较重要的。Go语言中字符串以原生数据类型出现，使用字符串就像使用其他原生数据类型（int、bool）一样。Go语言中的字符串内部实现使用的是UTF-8编码。
+
+### **字符串转义**
+
+常见的转义有：回车、换行、单双引号、制表符等等。
+
+| 转义符 | 含义   |
+| ------ | ------ |
+| \r     | 回车符 |
+| \n     | 换行符 |
+| \t     | 制表符 |
+| \ '    | 单引号 |
+| \ "    | 双引号 |
+| \\ \   | 反斜杠 |
+
+### **字符串常用操作**
+
+| 方法                                | 介绍       |
+| ----------------------------------- | ---------- |
+| len(str)                            | 求长度     |
+| +                                   | 拼接字符串 |
+| string.Split                        | 分割字符串 |
+| string.contains                     | 判断包含   |
+| string.HasPrefix   string.JasSuffix | 判断前后缀 |
+| string.Join(a[]string,sep string)   | join连接   |
+
+```go
+import (
+	"fmt"
+)
+func main() {
+	var str1 = "hello"
+	var str2 = "golang"
+	fmt.Println(str1 + str2)
+	var str3 = fmt.Sprintf("%v %v", str1, str2)
+	fmt.Println(str3)
+}
+```
+
+### **byte和rune**
 
 
 
