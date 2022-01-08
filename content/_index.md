@@ -13,5 +13,6 @@ type: docs
 
 本人也是在学习阶段，如果读者在阅读的过程中怀疑某段内容有误，那请坚信自己的观点，本笔记仅仅是抛砖引玉。
 
+本笔记思维导图（待完善）
 
-
+![image-20220108224608461](https://gitee.com/fidjiw/images/raw/master/img/image-20220108224608461.png)
