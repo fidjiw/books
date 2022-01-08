@@ -1,5 +1,5 @@
 ---
-title: 1.7 指针
+title: 1.7 结构体
 weight: 7
 ---
 
