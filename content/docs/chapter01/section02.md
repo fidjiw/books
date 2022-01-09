@@ -1,7 +1,6 @@
 ---
 title: 1.2 流程控制
 weight: 2
-bookToc: false
 ---
 
 # Golang流程控制介绍
