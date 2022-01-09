@@ -3,7 +3,7 @@ title: 1.2 流程控制
 weight: 2
 ---
 
-# 流程控制
+# 1.2 流程控制
 
 流程控制在编程语言中充当着重要的角色，它控制着程序的逻辑走向和执行次序。
 
@@ -11,7 +11,7 @@ weight: 2
 
 > 注意：Go语言是没有while的
 
-## 1. if else
+## 1.2.1 if else
 
 直接看例子
 
@@ -64,7 +64,7 @@ func ifDemo() {
 
 ### 练习
 
-## 2. for
+## 1.2.2 for
 
 Go语言中几乎所有的循环都可以用for语句来实现（可用for语句的变形来实现其他编程语言中的while循环）。
 
@@ -115,23 +115,23 @@ i := 0
 
 ### 练习
 
-## 3. for range
+## 1.2.3 for range
 
 
 
-## 4.  switch case
+## 1.2.4 switch case
 
 
 
-## 5.  goto 
+## 1.2.5 goto 
 
 
 
-## 6. break
+## 1.2.6 break
 
 
 
-## 7. continue
+## 1.2.7 continue
 
 
 
