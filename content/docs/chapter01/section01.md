@@ -202,6 +202,36 @@ func main() {
 
 ### **byte和rune**
 
+组成字符串的元素是字符，字符串用双引号""，字符用单引号''。
+
+- 字节：计算机处理数据的基本单位，用 **B** 来表示，1B=8bit（一个字节=8位）
+- 字符：计算机中使用的字母、数字、字、符号（一个汉字占3个字节、一个字母占1个字节）
+
+```go
+package main
+import (
+	"fmt"
+)
+func main() {
+	a := "z"
+	fmt.Println(len(a)) //1
+	b := "张"
+	fmt.Println(len(b)) //3
+}
+```
+
+Go语言中的字符有两种：
+
+- uint8（byte）：代表一个ASCII码的字符
+- rune：代表一个UTF-8字符
+
+字符串的底层是一个byte数组，可以和 []byte 类型转换。
+
+字符串、byte、rune的关系：
+
+- 字符串由byte字节组成，字符串的长度是byte字节的长度
+- 一个rune字符由一个或多个byte组成
+
 
 
 
