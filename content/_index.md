@@ -15,4 +15,5 @@ type: docs
 
 笔记思维导图（待完善）
 
-![image-20220110111811733](https://gitee.com/fidjiw/images/raw/master/img/image-20220110111811733.png)
+![image-20220117204415560](https://gitee.com/fidjiw/images/raw/master/img/image-20220117204415560.png)
+
