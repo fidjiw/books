@@ -38,7 +38,7 @@ func ifDemo() {
 
 > 注意：Go语言中规定与if匹配的左括号必须与if和表达式放在同一行，否则会出现编译错误，与else匹配的{也必须与else放在同一行，而且else还要与if的右边括号}同行。
 
-### if语句特殊写法
+### 1.2.1.1 if语句特殊写法
 
 ```go
 package main
@@ -62,7 +62,7 @@ func ifDemo() {
 
 在if表达式之前添加一个执行语句，在根据语句的变量值进行判断执行。
 
-### 练习
+### 
 
 ## 1.2.2 for
 
@@ -113,7 +113,7 @@ i := 0
 	}
 ```
 
-### 练习
+### 
 
 ## 1.2.3 for range
 
@@ -222,7 +222,7 @@ func Demo() {
 }
 ```
 
-### fallthrought
+### 1.2.4.1 fallthrought
 
 fallthrought可以执行满足条件的case的下一个case，可以理解为穿透到下一个case，是为了兼容C语言中case的设计。
 
