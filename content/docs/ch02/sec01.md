@@ -256,6 +256,60 @@ r.GET("/someXML", func(c *gin.Context) {
 
 ## 2.1.5 Gin HTML模板渲染
 
+### 2.1.5.1 模板放在同一个目录
+
+1. 首先在项目根目录新建 ` templates ` 文件夹（任意名），然后在文件夹中新建 `index.html`
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<h1>这是HTML模板</h1>
+<h3>{{.title}}</h3>
+</body>
+</html>
+```
+
+2. Gin中使用 `c.HTML` 渲染模板，渲染模板前需要使用 `LoadHTMLGlob()` 或 `LoadHTMLFiles()` 方法加载模板
+
+```go
+package main
+
+import (
+	"github.com/gin-gonic/gin"
+	"net/http"
+)
+
+func main() {
+	router := gin.Default()
+	router.LoadHTMLGlob("templates/*") //加载html模板
+	//router.LoadHTMLFiles("templates/*", "templates/*")
+	router.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", gin.H{
+			"title": "首页",
+		})
+	})
+	router.Run(":9000") //改变默认启动的端口
+}
+
+```
+
+![image-20220121123140615](https://gitee.com/fidjiw/images/raw/master/img/image-20220121123140615.png)
+
+
+
+
+
+### 2.1.5.2 模板放在不同目录
+
+### 2.1.5.3 Gin模板基本语法
+
 
 
 ## 2.1.6 静态文件服务
