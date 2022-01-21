@@ -5,6 +5,8 @@ weight: 2
 
 # 2.2 Go设计模式
 
+![image-20220121162825283](https://gitee.com/fidjiw/images/raw/master/img/image-20220121162825283.png)
+
 
 
 设计模式（Design pattern）是一套被反复使用、多数人知晓的、经过分类编目的、代码设计经验的总结。
