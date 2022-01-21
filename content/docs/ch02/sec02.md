@@ -1,6 +1,7 @@
 ---
-title: 2.2
+title: 2.2 Go设计模式
 weight: 2
-bookToc: false
 ---
+
+# 2.2 Go设计模式
 
