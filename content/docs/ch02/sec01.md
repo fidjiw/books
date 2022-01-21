@@ -362,6 +362,94 @@ func main() {
 
 ### 2.1.5.3 Gin模板基本语法
 
+模板语法都包含在{{和}}中间， 其中{{.}}中的点表示当前对象  
+
+当传入一个结构体对象时， 可以根据.来访问结构体的对应字段  
+
+1. {{.}} 输出数据
+2. {{/* a comment */}}   注释
+3. {{$obj := .title}}  {{$obj}}   变量
+4. {{- .Name -}}  移除空格
+5. 比较函数
+
+| 函数 | 作用                       |
+| ---- | -------------------------- |
+| eq   | 如果 arg1 == arg2 则返回真 |
+| ne   | 如果 arg1 != arg2 则返回真 |
+| lt   | 如果 arg1 < arg2 则返回真  |
+| le   | 如果 arg1 <= arg2 则返回真 |
+| gt   | 如果 arg1 > arg2 则返回真  |
+| ge   | 如果 arg1 >= arg2 则返回真 |
+
+6. 条件判断
+
+{{if pipeline}} T1 {{end}}
+
+{{if pipeline}} T1 {{else}} T0 {{end}}
+
+{{if pipeline}} T1 {{else if pipeline}} T0 {{end}}
+
+{{if gt .score 60}}
+及格
+{{else}}
+不及格  
+{{end}}
+
+{{if gt .score 90}}
+优秀
+{{else if gt .score 60}}
+及格
+{{else}}
+不及格
+{{end}}  
+
+7. range 遍历（pipeline 的值必须是数组、 切片、 字典或者通道）
+
+```go
+{{range $key,$value := .obj}}
+	{{$value}}
+{{end}}
+```
+
+```go
+{{$key,$value := .obj}}
+	{{$value}}
+{{else}}
+	pipeline 的值其长度为 0
+{{end}}
+```
+
+8. with
+
+```go
+user := UserInfo{
+		Name: "张三",
+		Gender: "男",
+		Age: 18,
+	} 
+router.GET("/", func(c *gin.Context) {
+	c.HTML(http.StatusOK, "default/index.html",map[string]interface{}{
+		"user": user,
+		})
+	})
+
+{{with .user}}
+		<h4>姓名： {{.Name}}</h4>
+		<h4>性别： {{.user.Gender}}</h4>
+		<h4>年龄： {{.Age}}</h4>
+{{end}}
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 
