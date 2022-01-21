@@ -95,7 +95,7 @@ RESTful API 是目前比较成熟的一套互联网应用程序的 API 设计理
 
 ### 2.1.4.2 简单路由配置
 
-- get请求
+1. get请求
 
 ```go
 r.GET("/", func(c *gin.Context) {
@@ -103,7 +103,7 @@ r.GET("/", func(c *gin.Context) {
 	})
 ```
 
-- post请求
+2. post请求
 
 ```go
 r.POST("/", func(c *gin.Context) {
@@ -111,7 +111,7 @@ r.POST("/", func(c *gin.Context) {
 	})
 ```
 
-- PUT请求
+3. PUT请求
 
 ```go
 r.PUT("/", func(c *gin.Context) {
@@ -119,7 +119,7 @@ r.PUT("/", func(c *gin.Context) {
 	})
 ```
 
-- DELETE请求
+4. DELETE请求
 
 ```go
 r.DELETE("/", func(c *gin.Context) {
@@ -127,7 +127,7 @@ r.DELETE("/", func(c *gin.Context) {
 	})
 ```
 
-路由里面获取 Get 传值  
+5. 路由里面获取 Get 传值  
 
 ```go
 package main
@@ -150,7 +150,7 @@ func main() {
 // goo=golang
 ```
 
-动态路由
+6. 动态路由
 
 ```go
 package main
