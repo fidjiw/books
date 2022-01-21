@@ -442,21 +442,27 @@ router.GET("/", func(c *gin.Context) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 ## 2.1.6 静态文件服务
 
+当我们渲染的 HTML 文件中引用了静态文件时,我们需要配置静态 web 服务  
+
+r.Static("/static", "./static") 前面的/static 表示路由 后面的./static 表示路径  
+
+```go
+func main() {
+	router := gin.Default()
+	router.Static("/static", "./static")
+	router.LoadHTMLGlob("templates/**/*")
+	// ...
+	router.Run(":9000") //改变默认启动的端口
+}
+```
+
+
+
 ## 2.1.7 路由详解
+
+
 
 ## 2.1.8 自定义控制器
 
