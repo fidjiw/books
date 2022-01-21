@@ -308,7 +308,61 @@ func main() {
 
 ### 2.1.5.2 模板放在不同目录
 
+情景：不同目录下有同名模板
+
+这个时候就不能用 * 全部引入了
+
+解决方法：定义模板的时候需要通过 `define`  来定义名称
+
+> 注意：<!-- 相当于给模板定义一个名字 define end 成对出现-->  
+
+下面的文件路径为：`templates/admin/index.html`  
+
+```html
+{{ define "admin/index.html" }}
+<!--    <!DOCTYPE html>-->
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+    </head>
+    <body>
+      <h1>后台模板</h1>
+      <h3>{{.title}}</h3>
+    </body>
+    </html>
+{{ end }}
+```
+
+```go
+package main
+
+import (
+	"github.com/gin-gonic/gin"
+	"net/http"
+)
+
+func main() {
+	router := gin.Default()
+	router.LoadHTMLGlob("templates/**/*")
+
+	router.GET("/admin", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", gin.H{
+			"title": "后台管理",
+		})
+	})
+	router.Run(":9000") //改变默认启动的端口
+```
+
+
+
+> 注意：如果模板在多级目录里面的话需要这样配置 r.LoadHTMLGlob("templates/**/**/*") /**表示目录  
+
 ### 2.1.5.3 Gin模板基本语法
+
+
 
 
 
