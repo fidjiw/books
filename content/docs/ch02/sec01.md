@@ -79,6 +79,180 @@ fresh
 
 ## 2.1.4 Gin路由
 
+### 2.1.4.1 路由概述
+
+路由（Routing） 是由一个 URI（或者叫路径） 和一个特定的 HTTP 方法（GET、 POST 等）组成的， 涉及到应用如何响应客户端对某个网站节点的访问  
+
+RESTful API 是目前比较成熟的一套互联网应用程序的 API 设计理论， 我们设计路由的时候建议参考 RESTful API 指南  
+
+在 RESTful 架构中， 每个网址代表一种资源， 不同的请求方式表示执行不同的操作  
+
+| GET（SELECT）    | 从服务器取出资源（一项或多项）                 |
+| ---------------- | ---------------------------------------------- |
+| POST（CREATE）   | 在服务器新建一个资源                           |
+| PUT（UPDATE）    | 在服务器更新资源（客户端提供改变后的完整资源） |
+| DELETE（DELETE） | 从服务器删除资源                               |
+
+### 2.1.4.2 简单路由配置
+
+- get请求
+
+```go
+r.GET("/", func(c *gin.Context) {
+		c.String(200, "Get")
+	})
+```
+
+- post请求
+
+```go
+r.POST("/", func(c *gin.Context) {
+		c.String(200, "Get")
+	})
+```
+
+- PUT请求
+
+```go
+r.PUT("/", func(c *gin.Context) {
+		c.String(200, "Get")
+	})
+```
+
+- DELETE请求
+
+```go
+r.DELETE("/", func(c *gin.Context) {
+		c.String(200, "Get")
+	})
+```
+
+路由里面获取 Get 传值  
+
+```go
+package main
+
+import "github.com/gin-gonic/gin"
+
+func main() {
+	// 创建一个默认的路由引擎
+	r := gin.Default()
+	// 配置路由
+	r.GET("/hello", func(c *gin.Context) {
+		goo := c.Query("goo")
+		c.String(200, "goo=%s", goo)
+	})
+	// 启动 HTTP 服务， 默认在 0.0.0.0:8080 启动服务
+	r.Run(":9000")
+}
+
+// http://127.0.0.1:9000/hello?goo=golang
+// goo=golang
+```
+
+动态路由
+
+```go
+package main
+
+import "github.com/gin-gonic/gin"
+
+func main() {
+	// 创建一个默认的路由引擎
+	r := gin.Default()
+	// 配置路由
+	r.GET("/user/:uid", func(c *gin.Context) {
+		uid := c.Param("uid")
+		c.String(200, "userID=%s", uid)
+	})
+	// 启动 HTTP 服务， 默认在 0.0.0.0:8080 启动服务
+	r.Run(":9000")
+}
+
+// http://127.0.0.1:9000/user/20
+// userID=20
+```
+
+
+
+### 2.1.4.3 各种返回数据格式
+
+1. 返回字符串
+
+```go
+r.GET("/news", func(c *gin.Context) {
+		aid := c.Query("aid")
+		c.String(200, "aid=%s", aid)
+	})
+```
+
+
+
+2. 返回JSON数据
+
+```go
+r.GET("/someJSON", func(c *gin.Context) {
+		// 方式一： 自己拼接 JSON
+		c.JSON(http.StatusOK, gin.H{"message": "Hello world!"}) //gin.H 是 map[string]interface{}的缩写
+	})
+	r.GET("/moreJSON", func(c *gin.Context) {
+		// 方法二： 使用结构体
+		var msg struct {
+			Name    string `json:"user"`
+			Message string
+			Age     int
+		}
+		msg.Name = "IT 营学院"
+		msg.Message = "Hello world!"
+		msg.Age = 18
+		c.JSON(http.StatusOK, msg)
+	})
+```
+
+
+
+3. 返回JSONP格式数据
+
+JSONP主要用于跨域请求
+
+```go
+r.GET("/JSONP", func(c *gin.Context) {
+		data := map[string]interface{}{
+			"foo": "bar",
+		}
+		//JSONP?callback=x
+		//与JSON的区别是可以传入回调函数
+		// 将输出： x({\"foo\":\"bar\"})
+		c.JSONP(http.StatusOK, data)
+	})
+```
+
+
+
+4. 返回XML数据
+
+```go
+r.GET("/someXML", func(c *gin.Context) {
+		// 方式一： 自己拼接 JSON
+		c.XML(http.StatusOK, gin.H{"message": "Hello world!"})
+	})
+	r.GET("/moreXML", func(c *gin.Context) {
+		// 方法二： 使用结构体
+		type MessageRecord struct {
+			Name string
+			Message string
+			Age int
+		} 
+		var msg MessageRecord
+		msg.Name = "golang"
+		msg.Message = "Hello world!"
+		msg.Age = 18
+		c.XML(http.StatusOK, msg)
+	})
+```
+
+
+
 ## 2.1.5 GinHTML模板渲染
 
 ## 2.1.6 静态文件服务
