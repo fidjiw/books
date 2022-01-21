@@ -5,6 +5,10 @@ weight: 3
 
 # 1.3 数组
 
+![eed8f4aca32b0ad3a252501268c832c](https://gitee.com/fidjiw/images/raw/master/img/eed8f4aca32b0ad3a252501268c832c.png)
+
+
+
 数组是一系列同一类型数据的集合
 
 数组中包含的数据被称为数组元素，数组元素可以是任意的原始类型，如：int、string，也可以是用户自定义的类型
