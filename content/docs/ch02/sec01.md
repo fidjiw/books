@@ -193,7 +193,8 @@ r.GET("/news", func(c *gin.Context) {
 ```go
 r.GET("/someJSON", func(c *gin.Context) {
 		// 方式一： 自己拼接 JSON
-		c.JSON(http.StatusOK, gin.H{"message": "Hello world!"}) //gin.H 是 map[string]interface{}的缩写
+    	//gin.H 是 map[string]interface{}的缩写
+		c.JSON(http.StatusOK, gin.H{"message": "Hello world!"}) 
 	})
 	r.GET("/moreJSON", func(c *gin.Context) {
 		// 方法二： 使用结构体
