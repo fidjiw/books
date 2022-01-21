@@ -314,7 +314,7 @@ func main() {
 
 解决方法：定义模板的时候需要通过 `define`  来定义名称
 
-> 注意：<!-- 相当于给模板定义一个名字 define end 成对出现-->  
+> 注意：`<!-- 相当于给模板定义一个名字 define end 成对出现-->  `
 
 下面的文件路径为：`templates/admin/index.html`  
 
