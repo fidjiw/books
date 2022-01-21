@@ -202,7 +202,7 @@ r.GET("/someJSON", func(c *gin.Context) {
 			Message string
 			Age     int
 		}
-		msg.Name = "IT 营学院"
+		msg.Name = "golang"
 		msg.Message = "Hello world!"
 		msg.Age = 18
 		c.JSON(http.StatusOK, msg)
