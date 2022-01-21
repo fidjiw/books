@@ -211,9 +211,9 @@ r.GET("/someJSON", func(c *gin.Context) {
 
 
 
-3. 返回JSONP格式数据
+3. 返回JSONP格式数据（JSONP主要用于跨域请求）
 
-JSONP主要用于跨域请求
+
 
 ```go
 r.GET("/JSONP", func(c *gin.Context) {
@@ -253,7 +253,9 @@ r.GET("/someXML", func(c *gin.Context) {
 
 
 
-## 2.1.5 GinHTML模板渲染
+## 2.1.5 Gin HTML模板渲染
+
+
 
 ## 2.1.6 静态文件服务
 
