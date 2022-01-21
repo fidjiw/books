@@ -5,6 +5,10 @@ weight: 1
 
 # 1.1 数据类型
 
+![image-20220121222136744](https://gitee.com/fidjiw/images/raw/master/img/image-20220121222136744.png)
+
+
+
 Go语言中数据类型分为两种：
 
 - 基本数据类型
