@@ -5,9 +5,13 @@ weight: 7
 
 # 1.7 结构体
 
-![image-20220122171147298](https://gitee.com/fidjiw/images/raw/master/img/image-20220122171147298.png)
+![image-20220122173128679](https://gitee.com/fidjiw/images/raw/master/img/image-20220122173128679.png)
+
+
 
 ## 1.7.1 Go结构体介绍
+
+
 
 ## 1.7.2 自定义类型和类型别名  
 

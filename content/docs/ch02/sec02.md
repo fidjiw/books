@@ -5,7 +5,9 @@ weight: 2
 
 # 2.2 Go设计模式
 
-![image-20220121162825283](https://gitee.com/fidjiw/images/raw/master/img/image-20220121162825283.png)
+![image-20220122172849225](https://gitee.com/fidjiw/images/raw/master/img/image-20220122172849225.png)
+
+
 
 
 
