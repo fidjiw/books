@@ -5,6 +5,8 @@ weight: 6
 
 # 1.6 函数
 
+![hs](https://gitee.com/fidjiw/images/raw/master/img/hs.png)
+
 
 
 ## 1.6.1 函数定义
