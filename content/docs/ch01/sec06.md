@@ -408,7 +408,7 @@ func main() {
     fmt.Println("end")
 } 
 
-输出结果：
+输出结果
 start
 end
 3 
@@ -506,7 +506,7 @@ Go 语言中（Go1.12） 是没有异常机制， 可以使用 panic/recover 模
 
 panic可以在任何地方引发， 但 **recover只有在 defer 调用的函数中有效**
 
-### 1.6.10.1 panic/recover
+### 1.6.10.1 panic、recover
 
 panic/recover 的基本使用  
 
