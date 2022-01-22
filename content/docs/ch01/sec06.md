@@ -418,7 +418,7 @@ end
 
 由于 defer 语句延迟调用的特性， 所以 defer 语句能非常方便的处理资源释放问题。 比如：资源清理、 文件关闭、 解锁及记录时间等。
 
-### 1.6.9.1 defer执行时机
+### 1.6.9.1 defer 执行时机
 
 在 Go 语言的函数中 return 语句在底层并不是 [原子操作](https://www.cnblogs.com/gqymy/p/11470643.html)（不可中断的一个或者一系列操作），它分为给返回值赋值和 RET 指令两步。
 
@@ -428,7 +428,195 @@ end
 
 ![image-20220122160755580](https://gitee.com/fidjiw/images/raw/master/img/image-20220122160755580.png)
 
+### 1.6.9.2 defer 经典案例 1  
 
+```go
+func f1() int {
+    x := 5
+    defer func() {
+    	x++
+    }()
+    return x
+} 
+func f2() (x int) {
+	defer func() {
+		x++
+	}()
+	return 5
+} 
+
+func f3() (y int) {
+    x := 5
+    defer func() {
+    	x++
+    }()
+    return x
+} 
+func f4() (x int) {
+    defer func(x int) {
+    	x++
+    }(x)
+    return 5
+} 
+func main() {
+    fmt.Println(f1())
+    fmt.Println(f2())
+    fmt.Println(f3())
+    fmt.Println(f4())
+}
+```
+
+
+
+### 1.6.9.3 defer 经典案例 2  
+
+```go
+func calc(index string, a, b int) int {
+    ret := a + b
+    fmt.Println(index, a, b, ret)
+    return ret
+} 
+
+func main() {
+    x := 1
+    y := 2
+    defer calc("AA", x, calc("A", x, y))
+    x = 10
+    defer calc("BB", x, calc("B", x, y))
+    y = 20
+}
+```
+
+
+
+> 提示： defer 注册要延迟执行的函数时该函数所有的参数都需要确定其值  
 
 ## 1.6.10 内置函数 panic/recover
+
+| 内置函数         | 介绍                                                         |
+| ---------------- | ------------------------------------------------------------ |
+| close            | 主要用来关闭 channel                                         |
+| len              | 用来求长度， 比如 string、 array、 slice、 map、 channel     |
+| new              | 用来分配内存， 主要用来分配值类型， 比如 int、 struct。 返回的是指针 |
+| make             | 用来分配内存， 主要用来分配引用类型， 比如 chan、 map、 slice |
+| append           | 用来追加元素到数组、 slice 中                                |
+| panic 和 recover | 用来做错误处理                                               |
+
+Go 语言中（Go1.12） 是没有异常机制， 可以使用 panic/recover 模式来处理错误  
+
+panic可以在任何地方引发， 但 **recover只有在 defer 调用的函数中有效**
+
+### 1.6.10.1 panic/recover 的基本使用  
+
+```go
+func funcA() {
+	fmt.Println("func A")
+} 
+
+func funcB() {
+	panic("panic in B")
+} 
+
+func funcC() {
+	fmt.Println("func C")
+} 
+
+func main() {
+    funcA()
+    funcB()
+    funcC()
+}
+
+输出：
+func A
+panic: panic in B
+
+goroutine 1 [running]:
+main.funcB(...)
+.../code/func/main.go:12
+main.main()
+.../code/func/main.go:20 +0x98
+```
+
+程序运行期间 funcB 中引发了 panic 导致程序崩溃， 异常退出了
+
+ 这个时候我们就可以通过recover 将程序恢复回来， 继续往后执行 
+
+```go
+func funcA() {
+	fmt.Println("func A")
+} 
+
+func funcB() {
+	defer func() {
+		err := recover()
+		//如果程序出出现了 panic 错误,可以通过 recover 恢复过来
+		if err != nil {
+			fmt.Println("recover in B")
+		}
+	}()
+	panic("panic in B")
+} 
+
+func funcC() {
+	fmt.Println("func C")
+} 
+
+func main() {
+    funcA()
+    funcB()
+    funcC()
+}
+```
+
+> 注意：
+>
+> recover()必须搭配 defer 使用
+>
+> defer 一定要在可能引发 panic 的语句之前定义
+
+### 1.6.10.2 defer、recover 实现异常处理  
+
+```go
+func fn2() {
+	defer func() {
+		err := recover()
+		if err != nil {
+			fmt.Println("抛出异常给管理员发送邮件")
+			fmt.Println(err)
+		}
+	}()
+    num1 := 10
+    num2 := 0
+    res := num1 / num2
+    fmt.Println("res=", res)
+}
+```
+
+### 1.6.10.3 defer、panic、recover 抛出异常  
+
+```go
+func readFile(fileName string) error {
+	if fileName == "main.go" {
+		return nil
+	} 
+    return errors.New("读取文件错误")
+} 
+func fn3() {
+	defer func() {
+		err := recover()
+		if err != nil {
+            fmt.Println("抛出异常给管理员发送邮件")
+		}
+	}()
+	var err = readFile("xxx.go")
+	if err != nil {
+		panic(err)
+	} 
+    fmt.Println("继续执行")
+} 
+func main() {
+	fn3()
+}
+```
 
