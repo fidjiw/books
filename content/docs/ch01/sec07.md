@@ -306,21 +306,208 @@ func main() {
 
 ### 1.7.4.2 指针类型的接收者  
 
+指针类型的接收者由一个结构体的指针组成，由于指针的特性，调用方法时修改接收者指针的任意成员变量，在方法结束后，修改都是有效的  
 
+这种方式就十分接近于其他语言中面向对象中的 this 或者 self  
+
+```go
+type Person struct {
+	name string
+	age int
+} 
+//值类型接受者
+func (p Person) printInfo() {
+	fmt.Printf("姓名:%v 年龄:%v\n", p.name, p.age)
+} 
+//指针类型接收者
+func (p *Person) setInfo(name string, age int) {
+	p.name = name
+	p.age = age
+} 
+func main() {
+	p1 := Person{
+		name: "小王子",
+		age: 25,
+	}
+    p1.printInfo()
+    p1.setInfo("张三", 20)
+    p1.printInfo()
+}
+```
 
 
 
 ## 1.7.5 给任意类型添加方法  
 
+Go 语言中，接收者的类型可以是任何类型，不仅仅是结构体，任何类型都可以拥有方法  
+
+例子：我们基于内置的 int 类型使用 type 关键字可以定义新的自定义类型，然后为我们的自定义类型添加方法 
+
+```go
+type myInt int
+func (m myInt) SayHello() {
+	fmt.Println("Hello, 我是一个 int。 ")
+} 
+func main() {
+    var m1 myInt
+    m1.SayHello() //Hello, 我是一个 int
+    m1 = 100
+    fmt.Printf("%#v %T\n", m1, m1) //100 main.MyInt
+}
+```
+
+> 注意：非本地类型不能定义方法，也就是说我们不能给别的包的类型定义方法
+
+  
+
 ## 1.7.6 结构体的匿名字段  
 
-## 1.7.7 嵌套结构体  
+结构体允许其成员字段在声明时没有字段名而只有类型，这种没有名字的字段就称为匿名字段  
+
+```go
+//Person 结构体 Person 类型
+    type Person struct {
+    string
+    int
+} 
+func main() {
+	p1 := Person{
+		"小王子",
+		18,
+        } 
+    fmt.Printf("%#v\n", p1) //main.Person{string:"北京", int:18}
+	fmt.Println(p1.string, p1.int) //北京 18
+}
+```
+
+匿名字段默认采用类型名作为字段名，结构体要求字段名称必须唯一，因此一个结构体中同种类型的匿名字段只能有一个  
+
+
+
+## 1.7.7 嵌套结构体 
+
+一个结构体中可以嵌套包含另一个结构体或结构体指针  
+
+```go
+//Address 地址结构体
+type Address struct {
+    Province string
+    City string
+} 
+//User 用户结构体
+type User struct {
+    Name string
+    Gender string
+    Address Address
+} 
+func main() {
+	user1 := User{
+		Name: "张三",
+   	 	Gender: "男",
+		Address: Address{
+			Province: "广东",
+			City: "深圳",
+		},
+	} 
+    fmt.Printf("user1=%#v\n", user1) //user1=main.User{Name:" 张 三 ", Gender:" 男 ",
+Address:main.Address{Province:"广东", City:"深圳"}}
+}
+```
+
+ 
 
 ## 1.7.8 嵌套匿名结构体  
 
+```go
+//Address 地址结构体
+type Address struct {
+    Province string
+    City string
+} 
+//User 用户结构体
+type User struct {
+    Name string
+    Gender string
+    Address //匿名结构体
+} 
+func main() {
+    var user2 User
+    user2.Name = "张三"
+        user2.Gender = "男"
+    user2.Address.Province = "广东" //通过匿名结构体.字段名访问
+    user2.City = "深圳" //直接访问匿名结构体的字段名
+    fmt.Printf("user2=%#v\n", user2) //user2=main.User{Name:" 张 三 ", Gender:" 男 ",Address:main.Address{Province:"广东", City:"深圳"}}
+}
+```
+
+> 注意： 当访问结构体成员时会先在结构体中查找该字段，找不到再去匿名结构体中查找  
+
 ## 1.7.9 关于嵌套结构体的字段名冲突  
 
+嵌套结构体内部可能存在相同的字段名。 这个时候为了避免歧义需要指定具体的内嵌结构体的字段  
+
+```go
+//Address 地址结构体
+type Address struct {
+    Province string
+    City string
+    CreateTime string
+} 
+//Email 邮箱结构体
+type Email struct {
+    Account string
+    CreateTime string
+} 
+//User 用户结构体
+type User struct {
+    Name string
+    Gender string
+    Address
+	Email
+} 
+func main() {
+    var user3 User
+    user3.Name = "张三"
+    user3.Gender = "男"
+    // user3.CreateTime = "2020" // ambiguous selector user3.CreateTime
+    user3.Address.CreateTime = "2020" //指定 Address 结构体中的 CreateTime
+    user3.Email.CreateTime = "2021" //指定 Email 结构体中的 CreateTime
+}
+```
+
+
+
 ## 1.7.10 结构体的继承  
+
+Go 语言中使用结构体也可以实现其他编程语言中的继承
+
+```go
+//Animal 动物
+type Animal struct {
+	name string
+} 
+func (a *Animal) run() {
+	fmt.Printf("%s 会运动！ \n", a.name)
+} 
+//Dog 狗
+type Dog struct {
+	Age int8
+	*Animal //通过嵌套匿名结构体实现继承
+} 
+func (d *Dog) wang() {
+	fmt.Printf("%s 会汪汪汪~\n", d.name)
+} 
+func main() {
+	d1 := &Dog{
+    Age: 4,
+    Animal: &Animal{ //注意嵌套的是结构体指针
+		name: "阿奇",
+		},
+	} 
+    d1.wang() //乐乐会汪汪汪~
+	d1.run() //乐乐会动！
+}
+```
 
 
 
