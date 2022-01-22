@@ -7,8 +7,6 @@ weight: 6
 
 ![hs](https://gitee.com/fidjiw/images/raw/master/img/hs.png)
 
-
-
 ## 1.6.1 函数定义
 
 函数是组织好的、 可重复使用的、 用于执行指定任务的代码块  
@@ -44,15 +42,87 @@ func sayHello() {
 }
 ```
 
-
-
-  
-
 ## 1.6.2 函数调用
+
+定义了函数之后， 我们可以通过函数名()的方式调用函数  
+
+> 注意：调用有返回值的函数时， 可以不接收其返回值
+
+
+
+
 
 ## 1.6.3 函数参数
 
+### 1.6.3.1 类型简写
+
+函数的参数中如果相邻变量的类型相同， 则可以省略类型  
+
+```go
+func intSum(x, y int) int {
+	return x + y
+}
+```
+
+
+
+### 1.6.3.2 可变参数
+
+可变参数是指函数的参数数量不固定
+
+Go 语言中的可变参数通过在参数名后加...来标识  
+
+> 注意： 可变参数通常要作为函数的最后一个参数  
+
+```go
+func intSum(x ...int) int {
+    fmt.Println(x) //x 是一个切片
+    sum := 0
+    for _, v := range x {
+    	sum = sum + v
+    } 
+    return sum
+}
+
+ret1 := intSum()
+ret2 := intSum(10)
+ret3 := intSum(10, 20)
+ret4 := intSum(10, 20, 30)
+fmt.Println(ret1, ret2, ret3, ret4) //0 10 30 60  
+```
+
+固定参数搭配可变参数使用时， 可变参数要放在固定参数的后面  
+
+```go
+func intSum2(x int, y ...int) int {
+    fmt.Println(x, y)
+    sum := x
+    for _, v := range y {
+    	sum = sum + v
+    } 
+        return sum
+} 
+
+ret5 := intSum2(100)
+ret6 := intSum2(100, 10)
+ret7 := intSum2(100, 10, 20)
+ret8 := intSum2(100, 10, 20, 30)
+fmt.Println(ret5, ret6, ret7, ret8) //100 110 130 160
+```
+
+本质上， 函数的可变参数是通过切片来实现的  
+
+
+
 ## 1.6.4 函数返回值
+
+### 1.6.4.1 函数多返回值
+
+
+
+### 1.6.4.2 返回值命名
+
+
 
 ## 1.6.5 函数变量作用域
 
