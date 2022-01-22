@@ -506,7 +506,9 @@ Go 语言中（Go1.12） 是没有异常机制， 可以使用 panic/recover 模
 
 panic可以在任何地方引发， 但 **recover只有在 defer 调用的函数中有效**
 
-### 1.6.10.1 panic/recover 的基本使用  
+### 1.6.10.1 panic/recover
+
+panic/recover 的基本使用  
 
 ```go
 func funcA() {
@@ -575,7 +577,9 @@ func main() {
 >
 > defer 一定要在可能引发 panic 的语句之前定义
 
-### 1.6.10.2 defer、recover 实现异常处理  
+### 1.6.10.2 defer、recover  
+
+defer 、 recover 实现异常处理  
 
 ```go
 func fn2() {
@@ -593,7 +597,9 @@ func fn2() {
 }
 ```
 
-### 1.6.10.3 defer、panic、recover 抛出异常  
+### 1.6.10.3 defer、panic、recover 
+
+defer 、 panic、 recover 抛出异常  
 
 ```go
 func readFile(fileName string) error {
