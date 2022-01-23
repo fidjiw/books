@@ -108,9 +108,59 @@ func main() {
 
 ### 1.9.2.1 空接口作为函数的参数  
 
+使用空接口实现可以接收任意类型的函数参数  
+
+```go
+package main
+
+import "fmt"
+
+// 空接口作为函数参数
+func show(a interface{}) {
+	fmt.Printf("type:%T value:%v\n", a, a)
+}
+
+func main() {
+	show(666)
+}
+```
+
+
+
 ### 1.9.2.2 map的值实现空接口  
 
+使用空接口实现可以保存任意值的字典  
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	// 空接口作为 map 值
+	var studentInfo = make(map[string]interface{})
+	studentInfo["name"] = "张三"
+	studentInfo["age"] = 18
+	studentInfo["married"] = false
+	fmt.Println(studentInfo)
+}
+```
+
+
+
 ### 1.9.2.3 切片实现空接口  
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var slice = []interface{}{"张三", 20, true, 32.2}
+	fmt.Println(slice)
+}
+
+```
 
 
 
