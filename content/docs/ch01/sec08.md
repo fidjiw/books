@@ -445,11 +445,99 @@ func main() {
 
 ## 1.8.9 Goroutine 结合 Channel 管道  
 
+需求 1： 
+
+定义两个方法， 一个方法给管道里面写数据， 一个从管道里面读取数据，要求同步进行  
+
+1、 开启一个 fn1 的的协程给向管道 inChan 中写入 100 条数据
+
+2、 开启一个 fn2 的协程读取 inChan 中写入的数据
+
+3、 注意： fn1 和 fn2 同时操作一个管道
+
+4、 主线程必须等待操作完成后才可以退出  
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+var wg sync.WaitGroup
+
+func fn1(intChan chan int) {
+	for i := 0; i < 100; i++ {
+		intChan <- i + 1
+		fmt.Println("writeData 写入数据-", i+1)
+		time.Sleep(time.Millisecond * 100)
+	}
+	close(intChan)
+	wg.Done()
+}
+func fn2(intChan chan int) {
+	for v := range intChan {
+		fmt.Printf("readData 读到数据=%v\n", v)
+		time.Sleep(time.Millisecond * 50)
+	}
+	wg.Done()
+}
+func main() {
+	allChan := make(chan int, 100)
+	wg.Add(1)
+	go fn1(allChan)
+	wg.Add(1)
+	go fn2(allChan)
+	wg.Wait()
+	fmt.Println("读取完毕...")
+}
+```
+
+需求 2：
+
+ goroutine 结合 channel 实现统计 1-120000 的数字中那些是素数  
+
+
+
 ## 1.8.10 单向管道  
 
-## 1.8.11 select 多路复用  
+有的时候我们会将管道作为参数在多个任务函数间传递， 我们在不同的任务函数中使用管道都会对其进行限制， 比如限制管道在函数中只能发送或只能接收  
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	//1. 在默认情况下下， 管道是双向
+	//var chan1 chan int //可读可写
+	//2 声明为只写
+	var chan2 chan<- int
+	chan2 = make(chan int, 3)
+	chan2 <- 20
+	fmt.Println("chan2=", chan2)
+	//3. 声明为只读
+	var chan3 <-chan int
+	num2 := <-chan3
+	fmt.Println("num2", num2)
+}
+```
+
+
+
+## 1.8.11 select 多路复用 
+
+##  
 
 ## 1.8.12 并发安全和锁  
+
+### 1.8.12.1 互斥锁  
+
+### 1.8.12.2 读写互斥锁  
+
+
 
 ## 1.8.13 Recover 解决协程中出现的 Panic  
 
