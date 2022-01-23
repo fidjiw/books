@@ -1,9 +1,9 @@
 ---
-title: 1.8 channel(goroutine)
+title: 1.8 channel
 weight: 8
 ---
 
-# 1.8 channel(goroutine)
+# 1.8 channel
 
 ![image-20220122221731658](https://gitee.com/fidjiw/images/raw/master/img/image-20220122221731658.png)
 
