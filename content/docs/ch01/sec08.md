@@ -529,15 +529,218 @@ func main() {
 
 ## 1.8.11 select 多路复用 
 
-##  
+在某些场景下我们需要同时从多个通道接收数据。 这个时候就可以用到 Go中给我
+们提供的 select 多路复用   
+
+通常情况通道在接收数据时， 如果没有数据可以接收将会发生阻塞  
+
+Go 内置了 select 关键字， 可以同时响应多个管道的操作  
+
+select 的使用类似于 switch 语句， 它有一系列 case 分支和一个默认的分支。 每个 case 会对应一个管道的通信（接收或发送） 过程。 select 会一直等待， 直到某个 case 的通信操作完成时， 就会执行 case 分支对应的语句  
+
+```go
+select{
+	case <-ch1:
+		...
+	case data := <-ch2:
+		...
+	case ch3<-data:
+		...
+    default:
+		默认操作
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	//1.定义一个管道 10 个数据 int
+	intChan := make(chan int, 10)
+	for i := 0; i < 10; i++ {
+		intChan <- i
+	}
+	//2.定义一个管道 5 个数据 string
+	stringChan := make(chan string, 5)
+	for i := 0; i < 5; i++ {
+		stringChan <- "hello" + fmt.Sprintf("%d", i)
+	}
+	for {
+		select {
+		case v := <-intChan:
+			fmt.Printf("从 intChan 读取的数据%d\n", v)
+		case v := <-stringChan:
+			fmt.Printf("从 stringChan 读取的数据%s\n", v)
+		default:
+			fmt.Printf("overover\n")
+			time.Sleep(time.Second)
+			return
+		}
+	}
+}
+```
+
+
 
 ## 1.8.12 并发安全和锁  
 
 ### 1.8.12.1 互斥锁  
 
+互斥锁是传统并发编程中对共享资源进行访问控制的主要手段， 它由标准库 sync 中的 Mutex结构体类型表示。 sync.Mutex 类型只有两个公开的指针方法， Lock 和 Unlock。 Lock 锁定当前的共享资源， Unlock 进行解锁  
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+var count = 0
+
+func test() {
+	count++
+	fmt.Println("the count is : ", count)
+	time.Sleep(time.Millisecond)
+}
+func main() {
+	for r := 0; r < 100; r++ {
+		go test()
+	}
+	time.Sleep(time.Second)
+}
+```
+
+使用互斥锁能够保证 **同一时间有且只有一个 goroutine 进入临界区** ， 其他的 goroutine 则在等待锁  
+
+当互斥锁释放后， 等待的 goroutine 才可以获取锁进入临界区， 多个 goroutine 同时等待一个锁时， **唤醒的策略是随机的** 。  
+
+虽然使用互斥锁能解决资源争夺问题， 但是并不完美， 通过全局变量加锁同步来实现通讯，并不利于多个协程对全局变量的读写操作。 这个时候我们也可以通过另一种方式来实现上面的功能管道(Channel)  
+
 ### 1.8.12.2 读写互斥锁  
+
+**互斥锁的本质** 是当一个 goroutine 访问的时候， 其他 goroutine 都不能访问。 这样在资源同步，避免竞争的同时也降低了程序的并发性能。 程序由原来的并行执行变成了串行执行  
+
+其实， 当我们对一个不会变化的数据只做“读” 操作的话， 是不存在资源竞争的问题的。 因为数据是不变的， 不管怎么读取， 多少 goroutine 同时读取， 都是可以的  
+
+所以问题不是出在“读” 上， 主要是修改， 也就是“写” 。 修改的数据要同步， 这样其他goroutine 才可以感知到。 所以真正的互斥应该是读取和修改、 修改和修改之间， 读和读是没有互斥操作的必要的  
+
+因此， 衍生出另外一种锁， 叫做读写锁  
+
+读写锁可以让多个 **读操作并发** ， 同时读取， 但是对于写操作是完全互斥的。 也就是说， 当一个 goroutine 进行写操作的时候， 其他 goroutine 既不能进行读操作， 也不能进行写操作  
+
+GO 中的读写锁由结构体类型 sync.RWMutex 表示  
+
+此类型的方法集合中包含两对方法：  
+
+一组是对写操作的锁定和解锁， 简称“写锁定” 和“写解锁” ：  
+
+```go
+func (*RWMutex)Lock()
+func (*RWMutex)Unlock()
+```
+
+另一组表示对读操作的锁定和解锁， 简称为“读锁定” 与“读解锁” ：  
+
+```go
+func (*RWMutex)RLock()
+func (*RWMutex)RUnlock()
+```
+
+示例：
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+var count int
+var mutex sync.RWMutex
+var wg sync.WaitGroup
+
+//写的方法
+func write() {
+	mutex.Lock()
+	fmt.Println("执行写操作")
+	time.Sleep(time.Second * 3)
+	mutex.Unlock()
+	wg.Done()
+}
+
+//读的方法
+func read() {
+	mutex.RLock()
+	fmt.Println("执行读操作")
+	time.Sleep(time.Second * 3)
+	mutex.RUnlock()
+	wg.Done()
+}
+func main() {
+	// 开启 10 个协程执行写操作
+	for i := 0; i < 10; i++ {
+		wg.Add(1)
+		go read()
+	}
+	//开启 10 个协程执行读操作
+	for i := 0; i < 10; i++ {
+		wg.Add(1)
+		go write()
+	}
+	wg.Wait()
+}
+```
+
+
 
 
 
 ## 1.8.13 Recover 解决协程中出现的 Panic  
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+//函数
+func sayHello() {
+	for i := 0; i < 10; i++ {
+		time.Sleep(time.Second)
+		fmt.Println("hello,world")
+	}
+}
+
+//函数
+func test() {
+	//这里我们可以使用 defer + recover
+	defer func() {
+		//捕获 test 抛出的 panic
+		if err := recover(); err != nil {
+			fmt.Println("test() 发生错误", err)
+		}
+	}()
+	//定义了一个 map
+	var myMap map[int]string
+	myMap[0] = "golang" //error
+}
+func main() {
+	go sayHello()
+	go test()
+	for i := 0; i < 10; i++ {
+		fmt.Println("main() ok=", i)
+		time.Sleep(time.Second)
+	}
+}
+```
 
