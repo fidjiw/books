@@ -7,7 +7,7 @@ weight: 8
 
 ![image-20220122221731658](https://gitee.com/fidjiw/images/raw/master/img/image-20220122221731658.png)
 
-在这个小节可对照该博文 -> [Golang为并发而生](https://xfeng.fun/golang%E4%B8%BA%E5%B9%B6%E5%8F%91%E8%80%8C%E7%94%9F/)
+在这个小节可以对照该博文 -> [Golang为并发而生](https://xfeng.fun/golang%E4%B8%BA%E5%B9%B6%E5%8F%91%E8%80%8C%E7%94%9F/)
 
 
 
