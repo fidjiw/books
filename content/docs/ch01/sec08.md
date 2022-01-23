@@ -80,13 +80,137 @@ Go语言中的多协程有点类似其他语言中的多线程
 
 ## 1.8.4 Goroutine 与 sync.WaitGroup  
 
+并行执行需求：
 
+在主线程(可以理解成进程)中， 开启一个 goroutine, 该协程每隔 50 毫秒秒输出 "你好 golang"
+
+在主线程中也每隔 50 毫秒输出"你好 golang", 输出 10 次后， 退出程序
+
+要求主线程和goroutine 同时执行  
+
+```go
+package main
+
+import (
+	"fmt"
+	"strconv"
+	"time"
+)
+
+func test() {
+	for i := 1; i <= 10; i++ {
+		fmt.Println("test () hello,world " + strconv.Itoa(i))
+		time.Sleep(time.Second)
+	}
+}
+func main() {
+	go test() // 开启了一个协程
+	for i := 1; i <= 10; i++ {
+		fmt.Println(" main() hello,golang" + strconv.Itoa(i))
+		time.Sleep(time.Second)
+	}
+}
+```
+
+注意主线程执行完毕后即使协程没有执行完毕， 程序都会退出， 所以我们需要对上面代码进行改造
+
+![image-20220123122541036](https://gitee.com/fidjiw/images/raw/master/img/image-20220123122541036.png)
+
+sync.WaitGroup 可以实现主线程等待协程执行完毕
+
+```go
+package main
+
+import (
+	"fmt"
+	"strconv"
+	"sync"
+	"time"
+)
+
+var wg sync.WaitGroup //1、 定义全局的 WaitGroup
+func test() {
+	for i := 1; i <= 10; i++ {
+		fmt.Println("test () 你好 golang " + strconv.Itoa(i))
+		time.Sleep(time.Millisecond * 50)
+	}
+	wg.Done() // 4、 goroutine 结束就登记-1
+}
+func main() {
+	wg.Add(1) //2、 启动一个 goroutine 就登记+1
+	go test()
+	for i := 1; i <= 2; i++ {
+		fmt.Println(" main() 你好 golang" + strconv.Itoa(i))
+		time.Sleep(time.Millisecond * 50)
+	}
+	wg.Wait() // 3、 等待所有登记的 goroutine 都结束
+}
+```
+
+  
 
 ## 1.8.5 启动多个 Goroutine  
 
+在 Go 语言中实现并发就是这样简单， 我们还可以启动多个 goroutine 
+
+使用 sync.WaitGroup 来实现等待 goroutine 执行完毕  
+
+```go
+package main
+
+import (
+	"fmt"
+	"sync"
+)
+
+var wg sync.WaitGroup
+
+func hello(i int) {
+	defer wg.Done() // 3、goroutine 结束就登记-1
+	fmt.Println("Hello Goroutine!", i)
+}
+func main() {
+	for i := 0; i < 10; i++ {
+		wg.Add(1) // 1、启动一个 goroutine 就登记+1
+		go hello(i)
+	}
+	wg.Wait() // 2、等待所有登记的 goroutine 都结束
+}
+```
+
+多次执行上面的代码， 会发现每次打印的数字的顺序都不一致。 这是因为 10 个 goroutine是并发执行的， 而 **goroutine 的调度是随机的**  
+
 ## 1.8.6 设置并行运行时的 cup 数量  
 
+Go 运行时的调度器使用 GOMAXPROCS 参数来确定需要使用多少个 OS 线程来同时执行 Go代码。 默认值是机器上的 CPU 核心数。 例如在一个 8 核心的机器上，调度器会把 Go 代码同时调度到 8 个 OS 线程上。  
+
+Go 语言中可以通过 **runtime.GOMAXPROCS()** 函数设置当前程序并发时占用的 CPU 逻辑核心数。  
+
+Go1.5 版本之前， 默认使用的是单核心执行。 Go1.5 版本之后， 默认使用全部的 CPU 逻辑核心数。  
+
+```go
+package main
+
+import (
+	"fmt"
+	"runtime"
+)
+
+func main() {
+	//获取当前计算机上面的 cpu 个数
+	cpuNum := runtime.NumCPU()
+	fmt.Println("cpuNum=", cpuNum)
+	//可以自己设置使用多个 cpu
+	runtime.GOMAXPROCS(cpuNum - 1)
+	fmt.Println("ok")
+}
+```
+
+
+
 ## 1.8.7 Goroutine 统计素数  
+
+
 
 ## 1.8.8 Channel 管道  
 
