@@ -462,13 +462,236 @@ func main() {
 
 ## 2.1.7 路由详解
 
+路由（Routing） 是由一个 URI（或者叫路径） 和一个特定的 HTTP 方法（GET、 POST 等）组成的， 涉及到应用如何响应客户端对某个网站节点的访问  
+
+前面介绍了路由基础以及路由配置， 这里详细讲讲路由传值、 路由返回值  
+
+### 2.1.7.1 GET/POST
+
+1. Get请求传值
+
+http://127.0.0.1:9000/user?uid=20&page=1
+
+```go
+package main
+
+import "github.com/gin-gonic/gin"
+
+func main() {
+	// 创建一个默认的路由引擎
+	r := gin.Default()
+	// 配置路由
+	r.GET("/user", func(c *gin.Context) {
+		uid := c.Query("uid")
+		page := c.DefaultQuery("page", "0")
+		c.String(200, "uid=%v page=%v", uid, page)
+	})
+	r.Run(":9000") //改变默认启动的端口
+}
+
+```
+
+2. 动态路由传值
+
+http://127.0.0.1:9000/user/20
+
+```go
+package main
+
+import "github.com/gin-gonic/gin"
+
+func main() {
+	// 创建一个默认的路由引擎
+	r := gin.Default()
+	// 配置路由
+	r.GET("/user/:uid", func(c *gin.Context) {
+		uid := c.Param("uid")
+		c.String(200, "userID=%s", uid)
+	})
+	r.Run(":9000") //改变默认启动的端口
+}
+
+```
+
+3. Post 请求传值 获取 form 表单数据  
+
+
+
+3. 获取 GET POST 传递的数据绑定到结构体  
+4. 获取 Post Xml 数据  
+
+### 2.1.7.2 简单的路由组
+
+### 2.1.7.3 路由文件、分组
+
 
 
 ## 2.1.8 自定义控制器
 
+### 2.1.8.1 控制器分组
+
+当我们的项目比较大的时候有必要对我们的控制器进行分组  
+
+新建 controller/admin/NewsController.go  
+
+
+
+### 2.1.8.2 控制器继承
+
+
+
 ## 2.1.9 Gin中间件
 
+Gin 框架允许开发者在处理请求的过程中， 加入用户自己的钩子（Hook） 函数。 这个钩子函数就叫中间件， 中间件适合处理一些公共的业务逻辑， 比如登录认证、 权限校验、 数据分页、记录日志、 耗时统计等。
+
+> 通俗的讲： 中间件就是匹配路由前和匹配路由完成后执行的一系列操作  
+
+
+
+### 2.1.9.1 路由中间件
+
+1. 初始中间件
+
+Gin 中的中间件必须是一个 gin.HandlerFunc 类型， 配置路由的时候可以传递多个 func 回调函数， 最后一个 func 回调函数前面触发的方法都可以称为中间件  
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/gin-gonic/gin"
+)
+
+func initMiddleware(ctx *gin.Context) {
+	fmt.Println("我是一个中间件")
+}
+func main() {
+	r := gin.Default()
+	//访问路由的时候，首先会走中间件
+	//func 回调函数
+	r.GET("/", initMiddleware, func(ctx *gin.Context) {
+		ctx.String(200, "首页--中间件演示")
+	})
+	r.GET("/news", initMiddleware, func(ctx *gin.Context) {
+		ctx.String(200, "新闻页面--中间件演示")
+	})
+	r.Run(":8080")
+}
+
+```
+
+2. ctx.Next()调用该请求的剩余处理程序  
+
+中间件里面加上 ctx.Next()可以让我们在路由匹配完成后执行一些操作。  
+
+比如我们统计一个请求的执行时间  
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/gin-gonic/gin"
+	"time"
+)
+
+func initMiddleware(ctx *gin.Context) {
+	fmt.Println("1-执行中中间件")
+	start := time.Now().UnixNano()
+	// 调用该请求的剩余处理程序
+    // 执行调用initMiddleware方法的方法的剩余代码，再执行ctx.next下面的内容
+	ctx.Next()
+	fmt.Println("3-程序执行完成 计算时间")
+	// 计算耗时 Go 语言中的 Since()函数保留时间值， 并用于评估与实际时间的差异
+	end := time.Now().UnixNano()
+	fmt.Println(end - start)
+}
+func main() {
+	r := gin.Default()
+	r.GET("/", initMiddleware, func(ctx *gin.Context) {
+		fmt.Println("2-执行首页返回数据")
+		ctx.String(200, "首页--中间件演示")
+	})
+	r.GET("/news", initMiddleware, func(ctx *gin.Context) {
+		ctx.String(200, "新闻页面--中间件演示")
+	})
+	r.Run(":8080")
+}
+```
+
+3. 一个路由配置多个中间件的执行顺序  
+
+4. c.Abort()  
+
+Abort 是终止的意思， c.Abort() 表示终止调用该请求的剩余处理程序  
+
+### 2.1.9.2 全局中间件
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/gin-gonic/gin"
+)
+
+func initMiddleware(ctx *gin.Context) {
+	fmt.Println("全局中间件 通过 r.Use 配置")
+	// 调用该请求的剩余处理程序
+	ctx.Next()
+}
+func main() {
+	r := gin.Default()
+	r.Use(initMiddleware)
+	r.GET("/", func(ctx *gin.Context) {
+		ctx.String(200, "首页--中间件演示")
+	})
+	r.GET("/news", func(ctx *gin.Context) {
+		ctx.String(200, "新闻页面--中间件演示")
+	})
+	r.Run(":8080")
+}
+```
+
+
+
+### 2.1.9.3 在路由分组中配置中间件
+
+
+
+### 2.1.9.4 中间件和对应控制器之间共享数据  
+
+### 2.1.9.5 中间件注意事项
+
+1. gin 默认中间件
+
+gin.Default()默认使用了 Logger 和 Recovery 中间件， 其中：
+
+- Logger 中间件将日志写入 gin.DefaultWriter， 即使配置了 GIN_MODE=release。
+
+- Recovery 中间件会 recover 任何 panic。 如果有 panic 的话， 会写入 500 响应码。
+
+如果不想使用上面两个默认的中间件， 可以使用 gin.New()新建一个没有任何默认中间件的路由。
+
+2. gin 中间件中使用 goroutine
+
+当在中间件或 handler 中启动新的 goroutine 时， 不能使用原始的上下文（c *gin.Context） ，必须使用其只读副本（c.Copy()）
+
+  
+
 ## 2.1.10 Gin自定义Model
+
+1. 关于 Model
+
+如果我们的应用非常简单的话， 我们可以在 Controller 里面处理常见的业务逻辑。 
+
+但是如果我们有一个功能想在多个控制器、 或者多个模板里面复用的话， 那么我们就可以把公共的功能单独抽取出来作为一个模块（Model） 。 
+
+Model 是逐步抽象的过程， 一般我们会在 Model里面封装一些公共的方法让不同 Controller 使用， 也可以在 Model 中实现和数据库打交道。
+
+2. Model 里面封装公共的方法  
+
+
 
 ## 2.1.11 Gin文件上传
 
